@@ -116,23 +116,43 @@ scipy
 2. Run all cells sequentially
 3. View generated reports in the `Report/` directory
 
+## Model Save & Load
+
+Trained models are saved using `joblib` for reuse:
+
+```python
+import joblib
+import os
+
+# Save models
+model_dir = 'saved_models'
+joblib.dump(model, os.path.join(model_dir, 'logistic_regression.pkl'))
+joblib.dump(rf_model, os.path.join(model_dir, 'random_forest.pkl'))
+joblib.dump(svm, os.path.join(model_dir, 'svm.pkl'))
+joblib.dump(preprocessor, os.path.join(model_dir, 'preprocessor.pkl'))
+```
+
+```python
+# Load models
+loaded_lr = joblib.load(os.path.join(model_dir, 'logistic_regression.pkl'))
+loaded_rf = joblib.load(os.path.join(model_dir, 'random_forest.pkl'))
+loaded_svm = joblib.load(os.path.join(model_dir, 'svm.pkl'))
+loaded_preprocessor = joblib.load(os.path.join(model_dir, 'preprocessor.pkl'))
+
+# Make predictions
+new_data_processed = loaded_preprocessor.transform(new_data)
+predictions = loaded_lr.predict(new_data_processed)
+```
+
 ## Results
 
 | Model | Accuracy | AUC Score |
 |-------|----------|-----------|
-| Logistic Regression | ~73% | ~0.79 |
-| Random Forest | ~89% | ~0.78 |
-| SVM | ~73% | ~0.79 |
+| Logistic Regression | ~82% | ~0.78 |
+| Random Forest | ~85% | ~0.73 |
+| SVM | ~88% | ~0.68 |
 
 *Note: Models use class_weight='balanced' to handle imbalanced data*
-
-## Future Improvements
-
-- Implement additional sampling techniques (SMOTE, undersampling)
-- Hyperparameter tuning with GridSearchCV
-- Ensemble methods for improved performance
-- Feature selection optimization
-- Deep learning approaches
 
 ## License
 
